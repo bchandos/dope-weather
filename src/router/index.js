@@ -8,6 +8,10 @@ const router = createRouter({
     history: routerHistory,
     routes: [
       {
+        path: '/',
+        component: Daily
+      },
+      {
         path: '/hourly',
         component: Hourly
       },

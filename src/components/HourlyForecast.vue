@@ -5,7 +5,7 @@
         Hourly Forecast
       </span>
       <div v-if="!forecasts.length" class="flex justify-between items-center bg-teal-100 px-2 py-4 m-2 rounded-md shadow-md">
-        <span>Loading ... </span>
+        <span>{{ statusMessage }}</span>
       </div>
       <div v-for="hour in forecasts" :key="hour.number" class="flex justify-between items-center bg-teal-100 px-2 py-4 m-2 rounded-md shadow-md">
         <div class="flex-1 text-md font-semibold">{{ prettyDate(hour.startTime) }}</div>
@@ -33,13 +33,17 @@ export default {
     WindCompass,
   },
   setup(props) {
-    const url = 'https://api.weather.gov/gridpoints/PQR/87,38/forecast/hourly';
     const forecasts = ref([]);
+    const statusMessage = ref('Loading ...');
     
     const getForecasts = async () => {
-      const response = await fetch('https://api.weather.gov/gridpoints/PQR/87,38/forecast/hourly');
-      const json = await response.json()
-      forecasts.value = json['properties']['periods'];
+      try {
+        const response = await fetch('https://api.weather.gov/gridpoints/PQR/87,38/forecast/hourly', {mode: 'cors'});
+        const json = await response.json()
+        forecasts.value = json['properties']['periods'];
+      } catch(err) {
+        statusMessage.value = 'Error fetching data from api.weather.gov.';
+      }
     }
 
     const prettyDate = (date) => {
@@ -54,7 +58,8 @@ export default {
 
     return {
       forecasts,
-      prettyDate
+      prettyDate,
+      statusMessage
     }
   }
 
