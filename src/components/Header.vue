@@ -12,7 +12,7 @@
           </router-link>
         </div>
       </div>
-      <input class="py-2 px-2 rounded flex-grow" type="text"/>
+      <input class="mt-2 py-2 px-2 rounded flex-grow" type="text"/>
     </nav>
   </div>
 </template>
