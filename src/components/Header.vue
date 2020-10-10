@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center">
+  <header class="flex justify-center">
     <nav class="flex items-center justify-center flex-wrap bg-gray-500 p-6 md:w-1/2 w-full rounded-b-lg shadow-lg">
       <div class="text-white mr-6">
         <a class="font-semibold text-xl tracking-tight" href="/">The Weather</a>
@@ -14,7 +14,7 @@
       </div>
       <input class="mt-2 py-2 px-2 rounded flex-grow" type="text"/>
     </nav>
-  </div>
+  </header>
 </template>
 
 <script>

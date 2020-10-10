@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center">
+  <div class="flex justify-center mb-8">
     <div class="bg-gray-200 md:w-5/12 p-4 h-full w-11/12">
       <span class="text-xl font-semibold">
         Hourly Forecast
