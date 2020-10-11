@@ -1,6 +1,5 @@
 <template>
-  <img src="../assets/icons/arrow.svg" class="inline w-4 h-4" :style="{ transform: rotation }" />
-  
+  <img v-if="rotation" src="../assets/icons/arrow.svg" class="inline w-4 h-4" :style="{ transform: rotation }" />
 </template>
 
 <script>
@@ -43,6 +42,8 @@ export default {
             rotation.value = `rotate(${directionalLookup[props.compassDirection]-45}deg)`;
         } else if (props.degreeDirection) {
             rotation.value = `rotate(${props.degreeDirection-45}deg)`;
+        } else {
+            rotation.value = null;
         }
         return {
             rotation,
