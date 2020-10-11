@@ -39,7 +39,7 @@ export default {
     
     const getForecasts = async () => {
       try {
-        const url = `${store.baseURL}/gridpoints/${state.wfo}/${state.x},${state.y}/forecast`;
+        const url = `${store.baseURL}/gridpoints/${store.wfo}/${store.x},${store.y}/forecast`;
         const response = await fetch(url, {mode: 'cors'});
         const json = await response.json()
         forecasts.value = json['properties']['periods'];
