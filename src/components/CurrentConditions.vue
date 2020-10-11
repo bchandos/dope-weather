@@ -15,8 +15,9 @@
       <div>
         {{ Math.round(humidity) }}%
       </div>
-      <img :src="icon" alt="Weather icons" class="w-8 h-8 shadow-md rounded-full">
+      <img :src="icon" :alt="description" class="w-8 h-8 shadow-md rounded-full">
     </div>
+    <div>{{ description }}</div>
   </div>
 </template>
 
@@ -39,6 +40,7 @@ export default {
     const humidity = ref(0);
     const windDirection = ref(0);
     const windSpeed = ref(0);
+    const description = ref('');
     
     const statusMessage = ref('Loading ...');
     
@@ -57,11 +59,12 @@ export default {
         const json = await response.json()
         const currentConditions = json['properties'];      
         icon.value = currentConditions.icon;
-        time.value = currentConditions['timestamp'];
+        time.value = currentConditions.timestamp;
         temperature.value = currentConditions.temperature.value * 1.8 + 32;
         humidity.value = currentConditions.relativeHumidity.value;
         windDirection.value = currentConditions.windDirection.value;
         windSpeed.value = currentConditions.windSpeed.value * 0.6214;
+        description.value = currentConditions.textDescription;
         
       } catch(err) {
         statusMessage.value = 'Error fetching current conditions.';
@@ -82,7 +85,8 @@ export default {
       windDirection,
       windSpeed,
       prettyDate,
-      statusMessage
+      statusMessage,
+      description
     }
   }
 
