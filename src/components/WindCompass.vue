@@ -8,7 +8,16 @@ import { ref } from 'vue';
 
 export default {
     props: {
-        direction: String,
+        compassDirection: {
+            type: String,
+            required: false,
+            default: null,
+        },
+        degreeDirection: {
+            type: Number,
+            required: false,
+            default: null,
+        }
     },
     setup(props) {
         const rotation = ref('');
@@ -30,7 +39,11 @@ export default {
             'NW': 315,
             'NNW': 337.5
         }
-        rotation.value = `rotate(${directionalLookup[props.direction]-45}deg)`;
+        if (props.compassDirection){
+            rotation.value = `rotate(${directionalLookup[props.compassDirection]-45}deg)`;
+        } else if (props.degreeDirection) {
+            rotation.value = `rotate(${props.degreeDirection-45}deg)`;
+        }
         return {
             rotation,
         }

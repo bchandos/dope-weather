@@ -13,7 +13,7 @@
         <div class="flex-1 text-md">{{ day.shortForecast }}</div>
         <div class="flex-1 text-md">
           {{ day.windSpeed }}
-          <WindCompass :direction="day.windDirection" />
+          <WindCompass :compassDirection="day.windDirection" />
         </div>
         <img :src="day.icon" :alt="day.shortForecast" class="rounded-full shadow-md h-8 w-8" style="filter: saturate(40%);">
       </div>
@@ -24,6 +24,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import WindCompass from './WindCompass.vue';
+import { store } from '../store.js';
 
 export default {
   props: {
@@ -38,7 +39,8 @@ export default {
     
     const getForecasts = async () => {
       try {
-        const response = await fetch('https://api.weather.gov/gridpoints/PQR/87,38/forecast', {mode: 'cors'});
+        const url = `${store.baseURL}/gridpoints/${state.wfo}/${state.x},${state.y}/forecast`;
+        const response = await fetch(url, {mode: 'cors'});
         const json = await response.json()
         forecasts.value = json['properties']['periods'];
       } catch(err) {
