@@ -39,9 +39,9 @@ export default {
             'NNW': 337.5
         }
         if (props.compassDirection){
-            rotation.value = `rotate(${directionalLookup[props.compassDirection]-45}deg)`;
+            rotation.value = `rotate(${directionalLookup[props.compassDirection]}deg)`;
         } else if (props.degreeDirection) {
-            rotation.value = `rotate(${props.degreeDirection-45}deg)`;
+            rotation.value = `rotate(${props.degreeDirection}deg)`;
         } else {
             rotation.value = null;
         }

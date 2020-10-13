@@ -17,7 +17,7 @@
       </div>
       <img :src="icon" :alt="description" class="w-8 h-8 shadow-md rounded-full">
     </div>
-    <div>{{ description }}</div>
+    <div class="text-sm">{{ description }}</div>
   </div>
 </template>
 
@@ -57,7 +57,7 @@ export default {
         const url = `${store.baseURL}/stations/${stationId}/observations/latest`;
         const response = await fetch(url, {mode: 'cors'});
         const json = await response.json()
-        const currentConditions = json['properties'];      
+        const currentConditions = json['properties'];    
         icon.value = currentConditions.icon;
         time.value = currentConditions.timestamp;
         temperature.value = currentConditions.temperature.value * 1.8 + 32;
