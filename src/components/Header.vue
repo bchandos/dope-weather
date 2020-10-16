@@ -1,6 +1,6 @@
 <template>
   <header class="flex justify-center">
-    <nav class="bg-gray-500 p-6 md:w-1/2 w-full rounded-b-lg shadow-lg">
+    <nav class="bg-gray-500 p-6 md:w-1/2 w-full rounded-b-lg shadow-lg bg-cover" :style="imageUrl">
       <div class="flex items-center justify-center flex-wrap">
         <div class="text-white mr-6">
           <a class="font-semibold text-xl tracking-tight" href="/">The Weather</a>
@@ -23,8 +23,9 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import CurrentConditions from './CurrentConditions.vue';
+import { store } from '../store.js';
 
 export default {
   components: {
@@ -34,7 +35,25 @@ export default {
 
   },
   setup(props) {
+    const imageUrl = ref('');
+    const getImage = async () => {
+      try {
+        const url = `${store.baseURL}/offices/${store.wfo}`;
+        const response = await fetch(url, {mode: 'cors'});
+        const json = await response.json()
+        const address = json.address;
+        const city = address.addressLocality;
+        const state = store.stateLookup[address.addressRegion];
+        imageUrl.value = `background-image: url(https://source.unsplash.com/featured?${city},${state});`;
+      } catch(err) {
+        statusMessage.value = 'Error fetching data from api.weather.gov.';
+      }
+    }
+    
+    onMounted(getImage);
+
     return {
+      imageUrl
     }
   }
 
