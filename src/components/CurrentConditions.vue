@@ -2,7 +2,7 @@
   <div v-if="!time">
     {{ statusMessage }}
   </div>
-  <div v-else class="flex flex-col">
+  <div v-else class="flex flex-col mt-2 px-8 py-3 bg-gray-500 bg-opacity-50 rounded-md">
     <span class="italic">Current conditions on {{ prettyDate(time) }}:</span>
     <div class="flex justify-between items-center font-semibold text-lg">
       <div>

@@ -1,4 +1,6 @@
-export const store = {
+import { reactive } from 'vue';
+
+export const store = reactive({
     baseURL: 'https://api.weather.gov',
     wfo: 'PQR',
     x: 87,
@@ -57,4 +59,4 @@ export const store = {
         "WI": "Wisconsin",
         "WY": "Wyoming"
     },
-}
+});

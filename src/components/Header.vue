@@ -1,6 +1,6 @@
 <template>
   <header class="flex justify-center">
-    <nav class="bg-gray-500 p-6 md:w-1/2 w-full rounded-b-lg shadow-lg bg-cover" :style="imageUrl">
+    <nav class="bg-gray-500 p-6 pb-4 md:w-1/2 w-full rounded-b-lg shadow-lg bg-cover" :style="imageUrl">
       <div class="flex items-center justify-center flex-wrap">
         <div class="text-white mr-6">
           <a class="font-semibold text-xl tracking-tight" href="/">The Weather</a>
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
 import CurrentConditions from './CurrentConditions.vue';
 import { store } from '../store.js';
 
@@ -36,7 +36,7 @@ export default {
   },
   setup(props) {
     const imageUrl = ref('');
-    const getImage = async () => {
+    const getImage = () => {
       try {
         // const url = `${store.baseURL}/offices/${store.wfo}`;
         // const response = await fetch(url, {mode: 'cors'});
@@ -46,13 +46,15 @@ export default {
         // const state = store.stateLookup[address.addressRegion];
         // const keyword = `${city},${state}`;
         const keyword = store.currentDescription.replace(/ /, ',').toLowerCase();
-        imageUrl.value = `background-image: url(https://source.unsplash.com/featured?${keyword});`;
+        if (keyword) {
+          imageUrl.value = `background-image: url(https://source.unsplash.com/featured?${keyword});`;
+        }
       } catch(err) {
-        statusMessage.value = 'Error fetching data from api.weather.gov.';
+        
       }
     }
     
-    onMounted(getImage);
+    watchEffect(getImage);
 
     return {
       imageUrl
