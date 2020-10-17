@@ -38,13 +38,15 @@ export default {
     const imageUrl = ref('');
     const getImage = async () => {
       try {
-        const url = `${store.baseURL}/offices/${store.wfo}`;
-        const response = await fetch(url, {mode: 'cors'});
-        const json = await response.json()
-        const address = json.address;
-        const city = address.addressLocality;
-        const state = store.stateLookup[address.addressRegion];
-        imageUrl.value = `background-image: url(https://source.unsplash.com/featured?${city},${state});`;
+        // const url = `${store.baseURL}/offices/${store.wfo}`;
+        // const response = await fetch(url, {mode: 'cors'});
+        // const json = await response.json()
+        // const address = json.address;
+        // const city = address.addressLocality;
+        // const state = store.stateLookup[address.addressRegion];
+        // const keyword = `${city},${state}`;
+        const keyword = store.currentDescription.replace(/ /, ',').toLowerCase();
+        imageUrl.value = `background-image: url(https://source.unsplash.com/featured?${keyword});`;
       } catch(err) {
         statusMessage.value = 'Error fetching data from api.weather.gov.';
       }

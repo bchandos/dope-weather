@@ -3,6 +3,7 @@ export const store = {
     wfo: 'PQR',
     x: 87,
     y: 38,
+    currentDescription: '',
     stateLookup: {
         "AL": "Alabama",
         "AK": "Alaska",

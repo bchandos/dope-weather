@@ -65,6 +65,8 @@ export default {
         windDirection.value = currentConditions.windDirection.value;
         windSpeed.value = currentConditions.windSpeed.value * 0.6214;
         description.value = currentConditions.textDescription;
+        // Store current description text
+        store.currentDescription = description.value;
         
       } catch(err) {
         statusMessage.value = 'Error fetching current conditions.';
