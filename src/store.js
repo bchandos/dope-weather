@@ -6,6 +6,8 @@ export const store = reactive({
     x: 87,
     y: 38,
     currentDescription: '',
+    imageChoice: '',
+    settingsMenu: false,
     stateLookup: {
         "AL": "Alabama",
         "AK": "Alaska",
@@ -59,4 +61,15 @@ export const store = reactive({
         "WI": "Wisconsin",
         "WY": "Wyoming"
     },
+    setCookie: (key, value) => {
+        document.cookie = `${key}=${value}`;
+    },
+    getCookie: (key, defaultVal) => {
+        const cookie = document.cookie.split('; ').find(row => row.startsWith(key));
+        if (cookie) {
+            return cookie.split('=')[1]
+        } else {
+            return defaultVal;
+        }
+    }
 });

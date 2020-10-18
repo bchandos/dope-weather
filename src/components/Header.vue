@@ -14,6 +14,7 @@
           </div>
         </div>
         <input class="mt-2 py-2 px-2 rounded flex-grow" type="text"/>
+        <img @click="store.settingsMenu=true" src="../assets/icons/settings.svg" alt="Settings" class="mt-2 ml-2 h-5 w-5 cursor-pointer"/>
       </div>
       <div class="flex items-center justify-center flex-wrap">
         <CurrentConditions />
@@ -36,18 +37,28 @@ export default {
   },
   setup(props) {
     const imageUrl = ref('');
-    const getImage = () => {
+    const imageChoice = store.getCookie('imageChoice', '');
+    store.imageChoice = imageChoice;
+    const getImage = async () => {
       try {
-        // const url = `${store.baseURL}/offices/${store.wfo}`;
-        // const response = await fetch(url, {mode: 'cors'});
-        // const json = await response.json()
-        // const address = json.address;
-        // const city = address.addressLocality;
-        // const state = store.stateLookup[address.addressRegion];
-        // const keyword = `${city},${state}`;
-        const keyword = store.currentDescription.replace(/ /, ',').toLowerCase();
+        let keyword;
+        if (store.imageChoice=='city') {
+          const url = `${store.baseURL}/offices/${store.wfo}`;
+          const response = await fetch(url, {mode: 'cors'});
+          const json = await response.json()
+          const address = json.address;
+          const city = address.addressLocality;
+          const state = store.stateLookup[address.addressRegion];
+          keyword = `${city},${state}`;
+        } else if (store.imageChoice=='weather') {
+          keyword = store.currentDescription.replace(/ /, ',').toLowerCase();
+        } else {
+          keyword = null;
+        }
         if (keyword) {
           imageUrl.value = `background-image: url(https://source.unsplash.com/featured?${keyword});`;
+        } else {
+          imageUrl.value = '';
         }
       } catch(err) {
         
@@ -57,7 +68,8 @@ export default {
     watchEffect(getImage);
 
     return {
-      imageUrl
+      imageUrl,
+      store
     }
   }
 
