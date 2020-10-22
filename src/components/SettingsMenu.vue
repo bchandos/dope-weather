@@ -3,7 +3,7 @@
     v-show="store.settingsMenu"
     class="z-40 overflow-auto left-0 top-0 bottom-0 right-0 w-full h-full fixed bg-gray-500 bg-opacity-75"
   >
-    <div class="z-50 relative p-4 mx-auto my-0 max-w-full w-1/2" style="top: 25vh;">
+    <div class="z-50 relative p-4 mx-auto my-0 max-w-full sm:w-1/2" style="top: 25vh;">
       <div
         class="bg-white rounded shadow-lg border flex flex-col overflow-hidden"
       >
@@ -13,7 +13,9 @@
         >
           &times;
         </button>
+        <!-- Header -->
         <div class="px-6 py-3 text-xl border-b font-bold">Settings</div>
+        <h2 class="px-6 pt-1 font-semibold font-md">Background Image</h2>
         <div class="px-6 py-3 flex-grow">
           <div class="flex items-center">
             <input
@@ -24,10 +26,10 @@
               id="bg-image-condition"
               class="mr-3"
             />
-            Background image based on weather conditions
+            Weather conditions
           </div>
         </div>
-        <div class="px-6 py-3 flex-grow">
+        <div class="px-6 pb-3 flex-grow">
           <div class="flex items-center">
             <input
               v-model="weatherOffice"
@@ -37,7 +39,7 @@
               id="bg-image-location"
               class="mr-3"
             />
-            Background image based on weather office location
+            Weather office location
           </div>
         </div>
         <div class="px-6 py-3 border-t">

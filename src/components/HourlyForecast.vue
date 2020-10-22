@@ -7,11 +7,11 @@
       <div v-if="!forecasts.length" class="flex justify-between items-center bg-gray-100 px-2 py-4 m-2 rounded-md shadow-md">
         <span>{{ statusMessage }}</span>
       </div>
-      <div v-for="hour in forecasts" :key="hour.number" class="flex justify-between items-center bg-gray-100 px-2 py-4 m-2 rounded-md shadow-md">
-        <div class="text-gray-800 flex-1 text-md font-semibold">{{ prettyDate(hour.startTime) }}</div>
-        <div class="text-gray-800 flex-1 text-sm">{{ hour.temperature }}°{{ hour.temperatureUnit }}</div>
-        <div class="text-gray-800 flex-1 text-md">{{ hour.shortForecast }}</div>
-        <div class="text-gray-800 flex-1 text-md">
+      <div v-for="hour in forecasts" :key="hour.number" class="flex justify-between items-center flex-wrap bg-gray-100 px-2 py-4 m-2 rounded-md shadow-md">
+        <div class="text-gray-800 p-1 flex-1 text-md font-semibold">{{ prettyDate(hour.startTime) }}</div>
+        <div class="text-gray-800 p-1 flex-1 text-sm">{{ hour.temperature }}°{{ hour.temperatureUnit }}</div>
+        <div class="text-gray-800 p-1 flex-1 text-md">{{ hour.shortForecast }}</div>
+        <div class="text-gray-800 p-1 flex-1 text-md">
           {{ hour.windSpeed }}
           <WindCompass :compassDirection="hour.windDirection" />
         </div>
