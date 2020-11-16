@@ -4,9 +4,16 @@
       <span class="text-xl font-semibold">
         Hourly Forecast
       </span>
-      <div v-if="!forecasts.length" class="flex justify-between items-center bg-gray-100 px-2 py-4 m-2 rounded-md shadow-md">
-        <span>{{ statusMessage }}</span>
-      </div>
+      <template v-if="loading">
+        <div 
+          v-for="(day, index) in Array(10)" 
+          :key="index" 
+          class="flex justify-between flex-wrap items-center bg-gray-300 px-2 py-4 m-2 rounded-md shadow-md h-20"
+          :class="{'animate-pulse' : !errorState}"
+        >
+         <div v-if="index==0" class="flex-1 p-1 text-md font-semibold">{{ statusMessage }}</div>
+        </div>
+      </template>
       <div v-for="hour in forecasts" :key="hour.number" class="flex justify-between items-center flex-wrap bg-gray-100 px-2 py-4 m-2 rounded-md shadow-md">
         <div class="text-gray-800 p-1 flex-1 text-md font-semibold">{{ prettyDate(hour.startTime) }}</div>
         <div class="text-gray-800 p-1 flex-1 text-sm">{{ hour.temperature }}°{{ hour.temperatureUnit }}</div>
@@ -36,15 +43,20 @@ export default {
   setup(props) {
     const forecasts = ref([]);
     const statusMessage = ref('Loading ...');
+    const loading = ref(true);
+    const errorState = ref(false);
     
     const getForecasts = async () => {
       try {
+        loading.value = true;
         const url = `${store.baseURL}/gridpoints/${store.wfo}/${store.x},${store.y}/forecast/hourly`
         const response = await fetch(url, {mode: 'cors'});
         const json = await response.json()
         forecasts.value = json['properties']['periods'];
+        loading.value = false;
       } catch(err) {
         statusMessage.value = 'Error fetching data from api.weather.gov.';
+        errorState = true;
       }
     }
 
@@ -61,7 +73,9 @@ export default {
     return {
       forecasts,
       prettyDate,
-      statusMessage
+      statusMessage,
+      loading,
+      errorState
     }
   }
 
