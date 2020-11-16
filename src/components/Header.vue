@@ -51,7 +51,10 @@ export default {
           const state = store.stateLookup[address.addressRegion];
           keyword = `${city},${state}`;
         } else if (store.imageChoice=='weather') {
-          keyword = store.currentDescription.replace(/ /, ',').toLowerCase();
+          const possibleWords = store.currentDescription.split(' ');
+          const badWords = ['then', 'likely', 'chance', 'slight', 'mostly'];
+          const filteredWords = possibleWords.filter(word => !badWords.includes(word.toLowerCase()));
+          keyword = filteredWords.join();
         } else {
           keyword = null;
         }
