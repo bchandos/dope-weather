@@ -15,14 +15,14 @@
       <div>
         {{ Math.round(humidity) }}%
       </div>
-      <img :src="icon" :alt="description" class="w-8 h-8 shadow-md rounded-full">
+      <img v-if="icon" :src="icon" :alt="description" class="w-8 h-8 shadow-md rounded-full">
     </div>
     <div class="text-sm">{{ description }}</div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, watchEffect } from 'vue';
 import WindCompass from './WindCompass.vue';
 import { store } from '../store.js';
 
@@ -51,8 +51,10 @@ export default {
         const stationResponse = await fetch(stationUrl, {mode: 'cors'});
         const stationJson = await stationResponse.json()
         const availableStations = stationJson['features'];
-        // Pick the first station, for now...
-        const stationId = availableStations[0]['properties']['stationIdentifier'];
+        // Pick the nearest airport station, designated by starting the "K",
+        // as that is the likeliest to have completed data
+        const nearestAirport = availableStations.find(s => s.properties.stationIdentifier.startsWith('K'));
+        const stationId = nearestAirport.properties.stationIdentifier;
         // Get current observations for said station
         const url = `${store.baseURL}/stations/${stationId}/observations/latest`;
         const response = await fetch(url, {mode: 'cors'});
@@ -77,7 +79,7 @@ export default {
       return new Date(date).toLocaleString('en-US', {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
     }
     
-    onMounted(getConditions);
+    watchEffect(getConditions);
 
     return {
       icon,

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, watchEffect } from 'vue';
 import WindCompass from './WindCompass.vue';
 import { store } from '../store.js';
 
@@ -60,7 +60,7 @@ export default {
       }
     }
     
-    onMounted(getForecasts);
+    watchEffect(getForecasts);
 
     return {
       forecasts,

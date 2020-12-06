@@ -1,5 +1,7 @@
 import { reactive } from 'vue';
 
+// https://public.opendatasoft.com/api/records/1.0/search/?dataset=us-zip-code-latitude-and-longitude&q=97403
+// https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=4600+Silver+Hill+Rd%2C+Suitland%2C+MD+20746&benchmark=9&format=json
 export const store = reactive({
     baseURL: 'https://api.weather.gov',
     wfo: 'PQR',
@@ -71,5 +73,5 @@ export const store = reactive({
         } else {
             return defaultVal;
         }
-    }
+    },
 });
