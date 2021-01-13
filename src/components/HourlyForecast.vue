@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center mb-8">
-    <div class="bg-gray-200 md:w-5/12 p-4 h-full w-11/12">
+    <div class="bg-gray-200 py-4 px-2 h-full w-full mx-2 md:w-5/6 lg:w-3/4 xl:w-1/2">
       <span class="text-xl font-semibold">
         Hourly Forecast
       </span>
@@ -8,21 +8,24 @@
         <div 
           v-for="(day, index) in Array(10)" 
           :key="index" 
-          class="flex justify-between flex-wrap items-center bg-gray-300 px-2 py-4 m-2 rounded-md shadow-md h-20"
+          class="flex justify-between flex-wrap items-center bg-gray-300 px-2 py-4 my-2 rounded-md shadow-md h-20"
           :class="{'animate-pulse' : !errorState}"
         >
-         <div v-if="index==0" class="flex-1 p-1 text-md font-semibold">{{ statusMessage }}</div>
+         <div v-if="index==0" class="flex-1 p-1 text-base font-semibold">{{ statusMessage }}</div>
         </div>
       </template>
-      <div v-for="hour in forecasts" :key="hour.number" class="flex justify-between items-center flex-wrap bg-gray-100 px-2 py-4 m-2 rounded-md shadow-md">
-        <div class="text-gray-800 p-1 flex-1 text-md font-semibold">{{ prettyDate(hour.startTime) }}</div>
-        <div class="text-gray-800 p-1 flex-1 text-sm">{{ hour.temperature }}°{{ hour.temperatureUnit }}</div>
-        <div class="text-gray-800 p-1 flex-1 text-md">{{ hour.shortForecast }}</div>
-        <div class="text-gray-800 p-1 flex-1 text-md">
+      <div v-for="hour in forecasts" :key="hour.number" class="flex justify-between items-center flex-wrap bg-gray-100 px-2 py-4 my-2 rounded-md shadow-md">
+        <div class="text-gray-800 p-1 flex-1 text-sm md:text-base lg:text-lg font-semibold">{{ prettyDate(hour.startTime) }}</div>
+        <div class="text-gray-800 p-1 flex-1 text-sm md:text-base lg:text-lg">{{ hour.shortForecast }}</div>
+        <div class="text-gray-800 p-1 flex-1 text-sm md:text-base lg:text-lg">
           {{ hour.windSpeed }}
           <WindCompass :compassDirection="hour.windDirection" />
         </div>
-        <img :src="hour.icon" :alt="hour.shortForecast" class="rounded-full shadow-md h-8 w-8" style="filter: saturate(40%);">
+
+        <div class="flex flex-col">
+          <img :src="hour.icon" :alt="hour.shortForecast" class="rounded-full shadow-md h-8 w-8" style="filter: saturate(40%);">
+          <div class="text-gray-800 p-1 flex-1 text-sm md:text-base lg:text-lg">{{ hour.temperature }}°{{ hour.temperatureUnit }}</div>
+        </div>
       </div>
     </div>
   </div>

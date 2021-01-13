@@ -1,15 +1,15 @@
 <template>
   <header class="flex justify-center">
-    <nav class="bg-gray-500 p-6 pb-4 md:w-1/2 w-full rounded-b-lg shadow-lg bg-cover" :style="imageUrl">
+    <nav class="bg-gray-500 p-6 pb-4 w-full rounded-b-lg shadow-lg bg-cover md:w-5/6 lg:w-3/4 xl:w-1/2" :style="imageUrl">
       <div class="flex items-center justify-center flex-wrap">
-        <div class="text-white mr-6">
+        <div class="text-white mr-6 p-2 rounded-md bg-gray-500 bg-opacity-50">
           <a class="font-semibold text-xl tracking-tight" href="/">The Weather</a>
           <div class="flex items-center justify-around">
-            <router-link class="text-sm italic" to='/hourly'>
-              <img class="mt-2 w-5 h-5" src="../assets/icons/clock.svg" alt="Hourly Forecast"/>
+            <router-link to='/hourly'>
+              <img class="w-5 h-5" src="../assets/icons/clock.svg" alt="Hourly Forecast"/>
             </router-link>
-            <router-link class="text-sm italic" to='/daily'>
-              <img class="mt-2 w-5 h-5" src="../assets/icons/calendar.svg" alt="Daily Forecast"/>
+            <router-link to='/daily'>
+              <img class="w-5 h-5" src="../assets/icons/calendar.svg" alt="Daily Forecast"/>
             </router-link>
           </div>
         </div>

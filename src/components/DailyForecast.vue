@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center mb-8">
-    <div class="bg-gray-200 md:w-5/12 p-4 h-full w-11/12">
+    <div class="bg-gray-200 py-4 px-2 h-full w-full mx-2 md:w-5/6 lg:w-3/4 xl:w-1/2">
       <span class="text-xl font-semibold">
         Daily Forecast
       </span>
@@ -8,21 +8,23 @@
         <div 
           v-for="(day, index) in Array(10)" 
           :key="index" 
-          class="flex justify-between flex-wrap items-center bg-gray-300 px-2 py-4 m-2 rounded-md shadow-md h-20"
+          class="flex justify-between flex-wrap items-center bg-gray-300 px-2 py-4 my-2 rounded-md shadow-md h-20"
           :class="{'animate-pulse' : !errorState}"
         >
-         <div v-if="index==0" class="flex-1 p-1 text-md font-semibold">{{ statusMessage }}</div>
+         <div v-if="index==0" class="flex-1 p-1 text-base font-semibold">{{ statusMessage }}</div>
         </div>
       </template>
-      <div v-for="day in forecasts" :key="day.number" class="flex justify-between flex-wrap items-center bg-gray-100 px-2 py-4 m-2 rounded-md shadow-md">
-        <div class="flex-1 p-1 text-md font-semibold">{{ day.name }}</div>
-        <div class="flex-1 p-1 text-sm">{{ day.temperature }}°{{ day.temperatureUnit }}</div>
-        <div class="flex-1 p-1 text-md">{{ day.shortForecast }}</div>
-        <div class="flex-1 p-1 text-md">
+      <div v-for="day in forecasts" :key="day.number" class="flex justify-between flex-wrap items-center bg-gray-100 px-2 py-4 my-2 rounded-md shadow-md">
+        <div class="text-gray-800 flex-1 p-1 text-sm md:text-base lg:text-lg font-semibold">{{ day.name }}</div>
+        <div class="text-gray-800 flex-1 p-1 text-sm md:text-base lg:text-lg">{{ day.shortForecast }}</div>
+        <div class="text-gray-800 flex-1 p-1 text-sm md:text-base lg:text-lg">
           {{ day.windSpeed }}
           <WindCompass :compassDirection="day.windDirection" />
         </div>
-        <img :src="day.icon" :alt="day.shortForecast" class="rounded-full shadow-md h-8 w-8" style="filter: saturate(40%);">
+        <div class="flex flex-col">
+          <img :src="day.icon" :alt="day.shortForecast" class="rounded-full shadow-md h-8 w-8" style="filter: saturate(40%);">
+          <div class="text-gray-800 flex-1 p-1 text-sm md:text-base lg:text-lg">{{ day.temperature }}°{{ day.temperatureUnit }}</div>
+        </div>
       </div>
     </div>
   </div>

@@ -2,8 +2,8 @@
   <div v-if="!time">
     {{ statusMessage }}
   </div>
-  <div v-else class="flex flex-col mt-2 px-8 py-3 bg-gray-500 bg-opacity-50 rounded-md">
-    <span class="italic">Current conditions on {{ prettyDate(time) }}:</span>
+  <div v-else class="flex flex-col mt-2 px-4 py-3 bg-gray-500 bg-opacity-50 rounded-md">
+    <span class="italic text-sm md:text-lg">Current conditions on {{ prettyDate(time) }}:</span>
     <div class="flex justify-between items-center font-semibold text-lg">
       <div>
         {{ Math.round(temperature) }}°F
@@ -17,7 +17,7 @@
       </div>
       <img v-if="icon" :src="icon" :alt="description" class="w-8 h-8 shadow-md rounded-full">
     </div>
-    <div class="text-sm">{{ description }}</div>
+    <div class="text-sm md:text-lg">{{ description }}</div>
   </div>
 </template>
 
