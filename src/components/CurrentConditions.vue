@@ -1,9 +1,10 @@
 <template>
-  <div v-if="!time">
+  <div v-if="!time" class="flex flex-col mt-2 px-4 py-3 bg-gray-500 bg-opacity-50 rounded-md">
     {{ statusMessage }}
   </div>
   <div v-else class="flex flex-col mt-2 px-4 py-3 bg-gray-500 bg-opacity-50 rounded-md">
-    <span class="italic text-sm md:text-lg">Current conditions on {{ prettyDate(time) }}:</span>
+    <div class="italic text-sm md:text-lg font-medium">{{ cityStr }}</div>
+    <div class="italic text-sm md:text-lg">Current conditions on {{ prettyDate(time) }}:</div>
     <div class="flex justify-between items-center font-semibold text-lg">
       <div>
         {{ Math.round(temperature) }}°F
@@ -33,7 +34,7 @@ export default {
   components: {
     WindCompass,
   },
-  setup(props) {
+  setup() {
     const icon = ref('');
     const time = ref('');
     const temperature = ref(0);
@@ -52,23 +53,29 @@ export default {
         const stationJson = await stationResponse.json()
         const availableStations = stationJson['features'];
         // Pick the nearest airport station, designated by starting the "K",
-        // as that is the likeliest to have completed data
-        const nearestAirport = availableStations.find(s => s.properties.stationIdentifier.startsWith('K'));
-        const stationId = nearestAirport.properties.stationIdentifier;
-        // Get current observations for said station
-        const url = `${store.baseURL}/stations/${stationId}/observations/latest`;
-        const response = await fetch(url, {mode: 'cors'});
-        const json = await response.json()
-        const currentConditions = json['properties'];    
-        icon.value = currentConditions.icon;
-        time.value = currentConditions.timestamp;
-        temperature.value = currentConditions.temperature.value * 1.8 + 32;
-        humidity.value = currentConditions.relativeHumidity.value;
-        windDirection.value = currentConditions.windDirection.value;
-        windSpeed.value = currentConditions.windSpeed.value * 0.6214;
-        description.value = currentConditions.textDescription;
-        // Store current description text
-        store.currentDescription = description.value;
+        // as that is the likeliest to have completed data. In case it does not
+        // loop through all possibilities.
+        const nearestAirports = availableStations.filter(s => s.properties.stationIdentifier.startsWith('K'));
+        for (let nearestAirport of nearestAirports) {
+          const stationId = nearestAirport.properties.stationIdentifier;
+          // Get current observations for said station
+          const url = `${store.baseURL}/stations/${stationId}/observations/latest`;
+          const response = await fetch(url, {mode: 'cors'});
+          if (response.ok) {
+            const json = await response.json()
+            const currentConditions = json['properties'];    
+            icon.value = currentConditions.icon;
+            time.value = currentConditions.timestamp;
+            temperature.value = currentConditions.temperature.value * 1.8 + 32;
+            humidity.value = currentConditions.relativeHumidity.value;
+            windDirection.value = currentConditions.windDirection.value;
+            windSpeed.value = currentConditions.windSpeed.value * 0.6214;
+            description.value = currentConditions.textDescription;
+            // Store current description text
+            store.currentDescription = description.value;
+            break;
+          }
+        }
         
       } catch(err) {
         statusMessage.value = 'Error fetching current conditions.';
@@ -78,6 +85,7 @@ export default {
     const prettyDate = (date) => {
       return new Date(date).toLocaleString('en-US', {month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
     }
+    const cityStr = `${store.city}, ${store.state} (${store.zip})`;
     
     watchEffect(getConditions);
 
@@ -90,7 +98,8 @@ export default {
       windSpeed,
       prettyDate,
       statusMessage,
-      description
+      description,
+      cityStr
     }
   }
 

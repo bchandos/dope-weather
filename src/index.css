@@ -8,3 +8,7 @@
 @tailwind components;
 
 @tailwind utilities; */
+
+.chrome-hide-arrow::-webkit-calendar-picker-indicator {
+    display: none;
+}

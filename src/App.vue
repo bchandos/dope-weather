@@ -18,13 +18,12 @@ export default {
     Footer,
     SettingsMenu,
   },
-  setup(props) {
-    const wfo = store.getCookie('wfo', 'PQR');
-    const x = parseInt(store.getCookie('x', 87));
-    const y = parseInt(store.getCookie('y', 38));
-    store.wfo = wfo;
-    store.x = x;
-    store.y = y;
+  setup() {
+    store.wfo = store.getCookie('wfo', 'PQR');
+    store.x = parseInt(store.getCookie('x', 87));
+    store.y = parseInt(store.getCookie('y', 38));
+    store.city = store.getCookie('city', 'Springfield');
+    store.zip = store.getCookie('zip', '97477');
   }
 }
 </script>

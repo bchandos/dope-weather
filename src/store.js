@@ -4,9 +4,12 @@ import { reactive } from 'vue';
 // https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=4600+Silver+Hill+Rd%2C+Suitland%2C+MD+20746&benchmark=9&format=json
 export const store = reactive({
     baseURL: 'https://api.weather.gov',
-    wfo: 'PQR',
-    x: 87,
-    y: 38,
+    wfo: '',
+    x: null,
+    y: null,
+    city: '',
+    state: '',
+    zip: '',
     currentDescription: '',
     imageChoice: '',
     settingsMenu: false,
@@ -74,4 +77,21 @@ export const store = reactive({
             return defaultVal;
         }
     },
+    addToHistory: (zip, wfo, x, y, city, state) => {
+        const history = localStorage.getItem('history') ? JSON.parse(localStorage.getItem('history')) : [];
+        if (!history.find(o => o.zip === zip)) {
+            // Only add if the ZIP isn't already present in the array
+            history.push({zip, wfo, x, y, city, state});
+            localStorage.setItem('history', JSON.stringify(history));
+        }
+    },
+    getHistory: () => {
+        return localStorage.getItem('history') ? JSON.parse(localStorage.getItem('history')) : [];
+    },
+    removeFromHistory: (zip) => {
+        const history = localStorage.getItem('history') ? JSON.parse(localStorage.getItem('history')) : [];
+        const newHistory = history.filter(o => o.zip !== zip);
+        localStorage.setItem('history', JSON.stringify(newHistory));
+    }
+
 });

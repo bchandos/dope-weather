@@ -13,37 +13,36 @@
             </router-link>
           </div>
         </div>
-        <div class="flex-grow relative">
-          <input v-model="zipCode" @keyup.enter="lookupZip" class="w-full mt-2 py-2 px-2 rounded" type="text" placeholder="ZIP Code"/>
-          <button v-if="zipCode.length == 5" @click="lookupZip" class="absolute inset-y-0 right-0 border border-indigo-400 bg-indigo-400 text-white rounded px-2 py-2 mt-2 disabled:opacity-90">Submit</button>
-          <span v-else class="absolute inset-y-0 right-0 border border-indigo-400 bg-indigo-400 text-white rounded px-2 py-2 mt-2 opacity-50">Submit</span>
-        </div>
+        <ZipCodeInput />
         <img @click="store.settingsMenu=true" src="../assets/icons/settings.svg" alt="Settings" class="mt-2 ml-2 h-5 w-5 cursor-pointer"/>
       </div>
       <div class="flex items-center justify-center flex-wrap">
-        <CurrentConditions />
+        <CurrentConditions :key="store.zip" />
       </div>
     </nav>
   </header>
 </template>
 
 <script>
-import { ref, onMounted, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import CurrentConditions from './CurrentConditions.vue';
+import ZipCodeInput from './ZipCodeInput.vue';
 import { store } from '../store.js';
 
 export default {
   components: {
     CurrentConditions,
+    ZipCodeInput,
   },
   props: {
 
   },
-  setup(props) {
-    const zipCode = ref('');
+  setup() {
     const imageUrl = ref('');
+
     const imageChoice = store.getCookie('imageChoice', '');
     store.imageChoice = imageChoice;
+
     const getImage = async () => {
       try {
         let keyword;
@@ -73,33 +72,13 @@ export default {
       }
     }
 
-    const lookupZip = async () => {
-      if (zipCode.value.length == 5) {
-        const zipResponse = await fetch(`https://public.opendatasoft.com/api/records/1.0/search/?dataset=us-zip-code-latitude-and-longitude&q=${zipCode.value}`);
-        const zipJson = await zipResponse.json();
-        const geopoint = zipJson.records[0].fields;
-        const latitude = geopoint.latitude;
-        const longitude = geopoint.longitude;
-
-        const weatherResponse = await fetch(`https://api.weather.gov/points/${latitude},${longitude}`);
-        const weatherJson = await weatherResponse.json();
-        store.wfo = weatherJson.properties.gridId;
-        store.x = weatherJson.properties.gridX;
-        store.y = weatherJson.properties.gridY;
-        store.setCookie('wfo', store.wfo);
-        store.setCookie('x', store.x);
-        store.setCookie('y', store.y);
-      }
-    zipCode.value = '';
-    }
     
+
     watchEffect(getImage);
 
     return {
       imageUrl,
       store,
-      zipCode,
-      lookupZip
     }
   }
 
