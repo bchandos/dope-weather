@@ -4,7 +4,7 @@
       v-model="zipCodeSearch"
       @keyup="handleKeyup"
       @focus="handleFocus"
-      class="w-full mt-2 py-2 px-2 rounded chrome-hide-arrow"
+      class="w-full mt-2 py-2 px-2 rounded chrome-hide-arrow "
       type="text"
       placeholder="ZIP Code"
     />
@@ -13,28 +13,28 @@
         class="fixed top-0 left-0 w-full h-full z-10"
         @click="closeHistoryList"
       ></div>
-      <datalist
+      <ul
         id="history-options"
         class="absolute block w-full text-lg bg-gray-400 rounded-b z-20 overflow-hidden"
       >
-        <option
+        <li
           v-for="opt in historyOptions"
           @click="selectOption"
           @mouseover="highlightOption"
-          :value="opt.zip"
           :key="opt.zip"
-          class="text-lg p-2 hover:bg-gray-600"
+          :data-zip="opt.zip"
+          class="text-lg p-2 hover:bg-gray-600 flex justify-between"
           :class="{ 'bg-gray-600': opt.zip === highlightedZipInList }"
         >
-          {{ opt.zip }} ({{ opt.city }}, {{ opt.state }})
+          <span>{{ opt.zip }} ({{ opt.city }}, {{ opt.state }})</span>
           <span
-            class="text-xl float-right cursor-pointer text-gray-800 hover:text-black"
+            class="text-2xl cursor-pointer text-gray-800 hover:text-black"
             @click.stop="removeHistoryItem"
           >
             &times;
           </span>
-        </option>
-      </datalist>
+        </li>
+      </ul>
     </template>
     <button
       v-if="zipCodeSearch.length == 5"
@@ -172,7 +172,7 @@ export default {
 
     const filterZip = () => {
       // Use the current input value to filter the remaining options
-      historyOptions.value = originalOptions.filter((o) => o.zip.startsWith(zipCodeSearch.value));
+      historyOptions.value = originalOptions.value.filter((o) => o.zip.startsWith(zipCodeSearch.value));
     };
     const closeHistoryList = (e) => {
       // Clear highlighted value and close list
@@ -182,20 +182,20 @@ export default {
 
     const selectOption = (e) => {
       // Set the value as the target's value, run lookup, and close list
-      zipCodeSearch.value = e.target.value;
+      zipCodeSearch.value = e.currentTarget.dataset.zip;
       lookupZip();
       closeHistoryList();
     };
 
     const highlightOption = (e) => {
       // Mouse support for highlighting
-      highlightedZipInList.value = e.target.value;
+      highlightedZipInList.value = e.currentTarget.dataset.zip;
     };
 
     const removeHistoryItem = (e) => {
       // Remove a ZIP code/location from History
       // Accesses parentElement of the <span>, which is the <option>
-      store.removeFromHistory(e.target.parentElement.value);
+      store.removeFromHistory(e.target.parentElement.dataset.zip);
       originalOptions.value = store.getHistory();
       historyOptions.value = store.getHistory();
     };
