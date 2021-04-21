@@ -11,7 +11,13 @@
           class="flex justify-between flex-wrap items-center bg-gray-300 px-2 py-4 my-2 rounded-md shadow-md h-20"
           :class="{'animate-pulse' : !errorState}"
         >
-         <div v-if="index==0" class="flex-1 p-1 text-base font-semibold">{{ statusMessage }}</div>
+          <div 
+            v-if="index==0" 
+            class="flex-1 p-1 text-base font-semibold cursor-pointer"
+            @click.stop="getForecasts"
+          >
+           {{ statusMessage }}
+          </div>
         </div>
       </template>
       <div v-for="day in forecasts" :key="day.number" class="flex justify-between flex-wrap items-center bg-gray-100 px-2 py-4 my-2 rounded-md shadow-md">
@@ -69,6 +75,7 @@ export default {
       statusMessage,
       loading,
       errorState,
+      getForecasts,
     }
   }
 
