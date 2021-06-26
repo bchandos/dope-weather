@@ -80,18 +80,18 @@ export default {
           store.zip = inHistory.zip;
         } else {
           const zipResponse = await fetch(
-            `https://public.opendatasoft.com/api/records/1.0/search/?dataset=us-zip-code-latitude-and-longitude&q=${zipCodeSearch.value}`
+            `https://public.opendatasoft.com/api/records/1.0/search/?dataset=georef-united-states-of-america-zc-point&q=${zipCodeSearch.value}`
           );
           const zipJson = await zipResponse.json();
           if (!zipJson.records || zipJson.records.length === 0) {
             // Invalid ZIP - do something
           }
           const geopoint = zipJson.records[0].fields;
-          const latitude = geopoint.latitude;
-          const longitude = geopoint.longitude;
-          const city = geopoint.city;
-          const state = geopoint.state;
-          const zip = geopoint.zip;
+          const latitude = geopoint.geo_point_2d[0];
+          const longitude = geopoint.geo_point_2d[1];
+          const city = geopoint.usps_city;
+          const state = geopoint.stusps_code;
+          const zip = geopoint.zip_code;
           const weatherResponse = await fetch(
             `https://api.weather.gov/points/${latitude},${longitude}`
           );
