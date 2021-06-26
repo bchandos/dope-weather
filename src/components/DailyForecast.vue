@@ -20,6 +20,12 @@
           </div>
         </div>
       </template>
+      <div v-for="alert in alerts" :key="alert.id" class="flex justify-between flex-wrap items-center bg-red-300 px-4 py-4 my-2 rounded-md shadow-md">
+        <h3 class="font-semibold text-center">
+          <img src="../assets/icons/warning.svg" alt="warning" class="w-6 h-6 inline">
+          {{ alert.properties.parameters.NWSheadline[0] }}
+        </h3>
+      </div>
       <div v-for="day in forecasts" :key="day.number" class="flex justify-between flex-wrap items-center bg-gray-100 px-2 py-4 my-2 rounded-md shadow-md">
         <div class="text-gray-800 flex-1 p-1 text-sm md:text-base lg:text-lg font-semibold">{{ day.name }}</div>
         <div class="text-gray-800 flex-1 p-1 text-sm md:text-base lg:text-lg">{{ day.shortForecast }}</div>
@@ -50,6 +56,7 @@ export default {
   },
   setup(props) {
     const forecasts = ref([]);
+    const alerts = ref([]);
     const statusMessage = ref('Loading ...');
     const loading = ref(true);
     const errorState = ref(false);
@@ -67,15 +74,29 @@ export default {
         errorState.value = true;
       }
     }
+
+    const getAlerts = async () => {
+      const url = `${store.baseURL}/alerts/active/zone/${store.zoneId}`;
+      const response = await fetch(url, {mode: 'cors'});
+      const json = await response.json()
+      try { 
+        alerts.value = json.features;
+      } catch(err) {
+        alerts.value = [];
+      }
+    }
     
     watchEffect(getForecasts);
+    watchEffect(getAlerts);
 
     return {
       forecasts,
+      alerts,
       statusMessage,
       loading,
       errorState,
       getForecasts,
+      getAlerts,
     }
   }
 

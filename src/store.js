@@ -10,6 +10,7 @@ export const store = reactive({
     city: '',
     state: '',
     zip: '',
+    zoneId: '',
     currentDescription: '',
     imageChoice: '',
     settingsMenu: false,
@@ -77,11 +78,11 @@ export const store = reactive({
             return defaultVal;
         }
     },
-    addToHistory: (zip, wfo, x, y, city, state) => {
+    addToHistory: (zip, wfo, x, y, city, state, zoneId) => {
         const history = localStorage.getItem('history') ? JSON.parse(localStorage.getItem('history')) : [];
         if (!history.find(o => o.zip === zip)) {
             // Only add if the ZIP isn't already present in the array
-            history.push({zip, wfo, x, y, city, state});
+            history.push({zip, wfo, x, y, city, state, zoneId});
             localStorage.setItem('history', JSON.stringify(history));
         }
     },

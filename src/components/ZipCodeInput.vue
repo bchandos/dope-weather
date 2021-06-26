@@ -78,6 +78,7 @@ export default {
           store.city = inHistory.city;
           store.state = inHistory.state;
           store.zip = inHistory.zip;
+          store.zoneId = inHistory.zoneId;
         } else {
           const zipResponse = await fetch(
             `https://public.opendatasoft.com/api/records/1.0/search/?dataset=georef-united-states-of-america-zc-point&q=${zipCodeSearch.value}`
@@ -96,13 +97,15 @@ export default {
             `https://api.weather.gov/points/${latitude},${longitude}`
           );
           const weatherJson = await weatherResponse.json();
+          const forecastZone = weatherJson.properties.forecastZone.split('/');
           store.wfo = weatherJson.properties.gridId;
           store.x = weatherJson.properties.gridX;
           store.y = weatherJson.properties.gridY;
+          store.zoneId = forecastZone[forecastZone.length - 1];
           store.city = city;
           store.state = state;
           store.zip = zip;
-          store.addToHistory(zip, store.wfo, store.x, store.y, city, state);
+          store.addToHistory(zip, store.wfo, store.x, store.y, city, state, store.zoneId);
         }
         store.setCookie("wfo", store.wfo);
         store.setCookie("x", store.x);

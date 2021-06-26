@@ -24,6 +24,7 @@ export default {
     store.y = parseInt(store.getCookie('y', 38));
     store.city = store.getCookie('city', 'Springfield');
     store.zip = store.getCookie('zip', '97477');
+    store.zoneId = store.getCookie('zoneId', 'ORZ008');
   }
 }
 </script>
