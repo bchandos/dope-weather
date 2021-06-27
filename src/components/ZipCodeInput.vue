@@ -215,6 +215,7 @@ export default {
       showHistoryList,
       store,
       zipCodeSearch,
+      lookupZip,
     };
   },
 };
