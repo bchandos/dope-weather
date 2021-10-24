@@ -20,11 +20,11 @@ export default {
   },
   setup() {
     store.wfo = store.getCookie('wfo', 'PQR');
-    store.x = parseInt(store.getCookie('x', 87));
-    store.y = parseInt(store.getCookie('y', 38));
-    store.city = store.getCookie('city', 'Springfield');
-    store.zip = store.getCookie('zip', '97477');
-    store.zoneId = store.getCookie('zoneId', 'ORZ008');
+    store.x = parseInt(store.getCookie('x', 115));
+    store.y = parseInt(store.getCookie('y', 105));
+    store.city = store.getCookie('city', 'Portland');
+    store.zip = store.getCookie('zip', '97218');
+    store.zoneId = store.getCookie('zoneId', 'ORZ006');
   }
 }
 </script>
